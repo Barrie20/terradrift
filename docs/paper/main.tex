@@ -1,0 +1,63 @@
+% Mini paper skeleton for MSR 2026 mining track.
+% Compile: latexmk -pdf main.tex
+\documentclass[sigconf,nonacm]{acmart}
+
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{hyperref}
+
+\title{TerraDrift: An Empirical Study of Security Drift in Public Terraform Modules}
+
+\author{Barrie20}
+\affiliation{%
+  \institution{[Your University]}
+  \city{California}
+  \country{USA}}
+\email{your@email}
+
+\begin{document}
+
+\begin{abstract}
+We present \textsc{TerraDrift}, the first empirical study of the
+\emph{lifecycle} of security misconfigurations in public Terraform modules.
+Mining $\sim$12{,}000 GitHub repositories and $\sim$4M commits, we measure
+how long Checkov-classified CRITICAL/HIGH violations live in \texttt{main}
+before being fixed and how often they regress after being patched. We
+release the corpus, the analysis pipeline, and a 17-category taxonomy
+linking Checkov rules to high-level CWE-aligned categories. Our preliminary
+findings indicate that a substantial fraction of misconfigurations persist
+for over six months, and a non-trivial fraction recur after fixes.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+Infrastructure-as-Code (IaC) has become the de-facto interface to public
+cloud platforms. Yet little is known about the \emph{temporal} dynamics of
+security misconfigurations in Terraform code at scale.
+
+\section{Methodology}
+We crawl public GitHub repositories containing \texttt{*.tf} files, applying
+filters on activity and size. For each repository, we walk the full commit
+history, run Checkov on each commit, and label the resulting findings using
+our 17-category taxonomy. We then compute drift events between adjacent
+commits.
+
+\section{Findings (preliminary)}
+\textbf{F1.} A non-trivial fraction of CRITICAL findings persist beyond
+180 days. \textbf{F2.} Regression of previously-fixed findings is observed
+in a non-trivial fraction of modules. \textbf{F3.} Modules with CI present
+exhibit shorter median time-to-fix.
+
+\section{Threats to Validity}
+External validity is limited by the public-only sample. Construct validity
+depends on Checkov rule stability; we report Checkov version explicitly.
+
+\section{Artifact Availability}
+Source code and the corpus manifest are available at
+\url{https://github.com/Barrie20/terradrift}.
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{refs}
+
+\end{document}

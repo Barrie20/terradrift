@@ -1,0 +1,9 @@
+apiVersion: v2
+name: terradrift-api
+description: Public read API for the TerraDrift corpus.
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+maintainers:
+  - name: Barrie20
+    url: https://github.com/Barrie20

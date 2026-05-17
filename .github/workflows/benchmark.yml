@@ -1,0 +1,35 @@
+name: benchmark
+
+on:
+  schedule:
+    - cron: "0 5 * * *"   # 05:00 UTC nightly
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  bench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -e .
+
+      - name: Run benchmark
+        run: |
+          python -m benchmarks.runner --commit ${{ github.sha }}
+
+      - name: Update results table
+        run: python scripts/update_results_table.py
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "perf(bench): nightly results"
+          file_pattern: |
+            benchmarks/results.md
+            README.md

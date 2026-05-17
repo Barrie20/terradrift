@@ -1,0 +1,22 @@
+name: Research question
+description: Propose a research direction or empirical question.
+title: "[RQ] "
+labels: ["research"]
+body:
+  - type: textarea
+    id: rq
+    attributes:
+      label: Research question
+      placeholder: "How does CI presence correlate with median time-to-fix?"
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+    validations:
+      required: true
+  - type: textarea
+    id: method
+    attributes:
+      label: Proposed method

@@ -1,0 +1,24 @@
+name: weekly-journal
+
+on:
+  schedule:
+    - cron: "0 22 * * 0"   # Sundays 22:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python scripts/build_weekly_digest.py
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(journal): weekly digest"
+          file_pattern: reports/*.md

@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use TerraDrift in academic work, please cite as follows."
+title: "TerraDrift: An Empirical Study of Security Drift in Public Terraform Modules"
+authors:
+  - family-names: Barrie
+    given-names: "[Full Name]"
+    affiliation: "[Your University]"
+date-released: 2026-05-16
+version: 0.1.0
+license: Apache-2.0
+repository-code: "https://github.com/Barrie20/terradrift"
+url: "https://github.com/Barrie20/terradrift"
+keywords:
+  - terraform
+  - infrastructure-as-code
+  - security
+  - empirical-software-engineering
+  - mining-software-repositories
