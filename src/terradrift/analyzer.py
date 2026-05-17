@@ -110,13 +110,17 @@ def _offline_fallback_scan(target_dir: Path, commit_sha: str) -> list[Finding]:
         for rule_id, pattern, msg in _OFFLINE_RULES:
             for m in re.finditer(pattern, text):
                 line = text.count("\n", 0, m.start()) + 1
+                # Use file:line as resource address so drift detector
+                # can distinguish between different findings in same file
+                rel_path = str(tf.relative_to(target_dir))
+                resource = f"{rel_path}:{line}"
                 findings.append(
                     Finding(
                         rule_id=rule_id,
                         category=classify(rule_id),
                         severity="HIGH",
-                        file_path=str(tf.relative_to(target_dir)),
-                        resource_address="(offline-mode)",
+                        file_path=rel_path,
+                        resource_address=resource,
                         line_start=line,
                         line_end=line,
                         commit_sha=commit_sha,

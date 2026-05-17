@@ -212,6 +212,7 @@ def walk_repo(full_name: str, clone_base: Path = CLONE_DIR, max_commits: int = M
     all_drift_events: list[DriftEvent] = []
     total_findings = 0
     history_fixed: set[tuple[str, str, str]] = set()
+    is_first_commit = True
 
     for i, commit in enumerate(commits):
         sha = commit["sha"]
@@ -226,8 +227,6 @@ def walk_repo(full_name: str, clone_base: Path = CLONE_DIR, max_commits: int = M
 
         # Find Terraform directories
         tf_dirs = find_tf_dirs(repo_dir)
-        if not tf_dirs:
-            continue
 
         # Scan all .tf directories at this commit
         current_findings: list[Finding] = []
@@ -237,8 +236,23 @@ def walk_repo(full_name: str, clone_base: Path = CLONE_DIR, max_commits: int = M
 
         total_findings += len(current_findings)
 
-        # Detect drift (skip first commit — nothing to compare against)
-        if previous_sha:
+        # Detect drift
+        if is_first_commit:
+            # First commit: all findings are INTRODUCED (they didn't exist before)
+            for f in current_findings:
+                all_drift_events.append(
+                    DriftEvent(
+                        repo=full_name,
+                        rule_id=f.rule_id,
+                        resource_address=f.resource_address,
+                        event="INTRODUCED",
+                        from_sha="000000",
+                        to_sha=sha[:8],
+                        days_alive=0.0,
+                    )
+                )
+            is_first_commit = False
+        elif previous_sha:
             events = detect_drift(
                 repo=full_name,
                 older=previous_findings,
