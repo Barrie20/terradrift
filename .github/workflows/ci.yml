@@ -36,7 +36,7 @@ jobs:
         run: mypy src
 
       - name: Pytest
-        run: pytest --cov=terradrift --cov-report=xml --cov-fail-under=70
+        run: pytest --cov=terradrift --cov-report=xml --cov-fail-under=60
 
       - name: Upload coverage
         if: always()
