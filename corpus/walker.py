@@ -75,14 +75,20 @@ def clone_repo(full_name: str, dest: Path) -> bool:
     url = f"https://github.com/{full_name}.git"
     try:
         result = subprocess.run(
-            ["git", "clone", "--quiet", "--no-tags", url, str(dest)],
+            ["git", "clone", "--quiet", "--no-tags", "--depth", "100", url, str(dest)],
             capture_output=True,
             text=True,
-            timeout=120,
+            timeout=300,
             check=False,
         )
+        if result.returncode != 0:
+            print(f"  Clone failed: {result.stderr[:200]}")
         return result.returncode == 0
-    except (subprocess.TimeoutExpired, OSError):
+    except subprocess.TimeoutExpired:
+        print(f"  Clone timed out (300s)")
+        return False
+    except OSError as e:
+        print(f"  Clone OS error: {e}")
         return False
 
 

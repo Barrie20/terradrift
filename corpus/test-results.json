@@ -1,0 +1,42 @@
+{
+  "generated_at": "2026-05-17T06:52:06.592534+00:00",
+  "repos_walked": 1,
+  "total_drift_events": 3,
+  "results": [
+    {
+      "repo": "terraform-aws-modules/terraform-aws-eks",
+      "commits_walked": 30,
+      "total_findings": 90,
+      "drift_events": [
+        {
+          "repo": "terraform-aws-modules/terraform-aws-eks",
+          "rule_id": "CKV_AWS_24",
+          "resource": "node_groups.tf:171",
+          "event": "INTRODUCED",
+          "from_sha": "000000",
+          "to_sha": "8c7acee7",
+          "days_alive": 0.0
+        },
+        {
+          "repo": "terraform-aws-modules/terraform-aws-eks",
+          "rule_id": "CKV_AWS_24",
+          "resource": "tests\\eks-managed-node-group\\main.tf:565",
+          "event": "INTRODUCED",
+          "from_sha": "000000",
+          "to_sha": "8c7acee7",
+          "days_alive": 0.0
+        },
+        {
+          "repo": "terraform-aws-modules/terraform-aws-eks",
+          "rule_id": "CKV_AWS_24",
+          "resource": "main.tf:565",
+          "event": "INTRODUCED",
+          "from_sha": "000000",
+          "to_sha": "8c7acee7",
+          "days_alive": 0.0
+        }
+      ],
+      "error": ""
+    }
+  ]
+}
