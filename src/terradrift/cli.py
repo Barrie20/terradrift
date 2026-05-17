@@ -76,13 +76,32 @@ def scan(target: Path, output: Path | None, commit: str) -> None:
         with output.open("w", newline="", encoding="utf-8") as fh:
             w = csv.writer(fh)
             w.writerow(
-                ["rule_id", "category", "severity", "file_path",
-                 "resource", "line_start", "line_end", "commit_sha", "message"]
+                [
+                    "rule_id",
+                    "category",
+                    "severity",
+                    "file_path",
+                    "resource",
+                    "line_start",
+                    "line_end",
+                    "commit_sha",
+                    "message",
+                ]
             )
             for f in findings:
-                w.writerow([f.rule_id, f.category.value, f.severity, f.file_path,
-                            f.resource_address, f.line_start, f.line_end,
-                            f.commit_sha, f.message])
+                w.writerow(
+                    [
+                        f.rule_id,
+                        f.category.value,
+                        f.severity,
+                        f.file_path,
+                        f.resource_address,
+                        f.line_start,
+                        f.line_end,
+                        f.commit_sha,
+                        f.message,
+                    ]
+                )
         console.print(f"Wrote: [green]{output}[/green]")
 
     sys.exit(0 if not findings else 1)
@@ -97,11 +116,11 @@ def reproduce(subset: str) -> None:
     `full` runs the full corpus and is intended for AWS Batch (~6h).
     """
     if subset == "mini":
-        console.print("[yellow]Mini reproduction is a stub in v0.1; "
-                      "wire crawler in v0.2.[/yellow]")
+        console.print("[yellow]Mini reproduction is a stub in v0.1; wire crawler in v0.2.[/yellow]")
     else:
-        console.print("[yellow]Full reproduction requires AWS credentials; "
-                      "see infra/terraform/.[/yellow]")
+        console.print(
+            "[yellow]Full reproduction requires AWS credentials; see infra/terraform/.[/yellow]"
+        )
 
 
 if __name__ == "__main__":

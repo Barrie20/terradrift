@@ -14,22 +14,22 @@ from enum import Enum
 class Category(str, Enum):
     """High-level categories of IaC security misconfigurations."""
 
-    PUBLIC_EXPOSURE = "public_exposure"            # e.g., S3 bucket public read
-    MISSING_ENCRYPTION = "missing_encryption"       # e.g., RDS unencrypted
-    WEAK_AUTHENTICATION = "weak_auth"              # e.g., IAM password policy
-    OVERPRIVILEGED_IAM = "overprivileged_iam"      # e.g., wildcard policy
-    MISSING_LOGGING = "missing_logging"            # e.g., no CloudTrail
-    MISSING_BACKUP = "missing_backup"              # e.g., RDS no snapshot
-    OPEN_NETWORK = "open_network"                  # e.g., 0.0.0.0/0 SSH
-    HARDCODED_SECRET = "hardcoded_secret"          # e.g., key in tfvars
-    OUTDATED_VERSION = "outdated_version"          # e.g., old TLS, old K8s
-    MISSING_MFA = "missing_mfa"                    # e.g., root no MFA
-    INSECURE_DEFAULTS = "insecure_defaults"        # e.g., default VPC use
-    MISSING_TAGS = "missing_tags"                  # governance, not security
-    INSECURE_TLS = "insecure_tls"                  # e.g., TLS 1.0 allowed
-    MISSING_VERSIONING = "missing_versioning"      # e.g., S3 no versioning
+    PUBLIC_EXPOSURE = "public_exposure"  # e.g., S3 bucket public read
+    MISSING_ENCRYPTION = "missing_encryption"  # e.g., RDS unencrypted
+    WEAK_AUTHENTICATION = "weak_auth"  # e.g., IAM password policy
+    OVERPRIVILEGED_IAM = "overprivileged_iam"  # e.g., wildcard policy
+    MISSING_LOGGING = "missing_logging"  # e.g., no CloudTrail
+    MISSING_BACKUP = "missing_backup"  # e.g., RDS no snapshot
+    OPEN_NETWORK = "open_network"  # e.g., 0.0.0.0/0 SSH
+    HARDCODED_SECRET = "hardcoded_secret"  # e.g., key in tfvars
+    OUTDATED_VERSION = "outdated_version"  # e.g., old TLS, old K8s
+    MISSING_MFA = "missing_mfa"  # e.g., root no MFA
+    INSECURE_DEFAULTS = "insecure_defaults"  # e.g., default VPC use
+    MISSING_TAGS = "missing_tags"  # governance, not security
+    INSECURE_TLS = "insecure_tls"  # e.g., TLS 1.0 allowed
+    MISSING_VERSIONING = "missing_versioning"  # e.g., S3 no versioning
     DISABLED_DELETION_PROTECTION = "no_deletion_protection"
-    EXPOSED_METADATA = "exposed_metadata"          # e.g., IMDSv1 still allowed
+    EXPOSED_METADATA = "exposed_metadata"  # e.g., IMDSv1 still allowed
     OTHER = "other"
 
 
@@ -141,7 +141,7 @@ CHECKOV_RULE_TO_CATEGORY: dict[str, Category] = {
     "CKV_AWS_55": Category.PUBLIC_EXPOSURE,
     "CKV_AWS_56": Category.PUBLIC_EXPOSURE,
     # IAM
-    "CKV_AWS_1":  Category.OVERPRIVILEGED_IAM,
+    "CKV_AWS_1": Category.OVERPRIVILEGED_IAM,
     "CKV_AWS_40": Category.OVERPRIVILEGED_IAM,
     "CKV_AWS_41": Category.HARDCODED_SECRET,
     # RDS

@@ -11,12 +11,11 @@ from __future__ import annotations
 import json
 import shutil
 import subprocess
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 from terradrift.models import Finding
 from terradrift.taxonomy import classify
-
 
 SEVERITY_NORMALIZE = {
     "INFO": "LOW",
@@ -28,12 +27,10 @@ SEVERITY_NORMALIZE = {
 }
 
 
-def _run(cmd: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess:
+def _run(cmd: list[str], cwd: Path | None = None) -> subprocess.CompletedProcess[str]:
     """Run a subprocess and capture output. Never raise on non-zero exit;
     Checkov returns 1 when findings are present."""
-    return subprocess.run(  # noqa: S603 — args are validated by callers
-        cmd, cwd=cwd, capture_output=True, text=True, check=False
-    )
+    return subprocess.run(cmd, cwd=cwd, capture_output=True, text=True, check=False)
 
 
 def _checkov_available() -> bool:
@@ -79,7 +76,7 @@ def run_checkov(target_dir: Path, commit_sha: str = "HEAD") -> list[Finding]:
                 line_start=int((r.get("file_line_range") or [0, 0])[0] or 0),
                 line_end=int((r.get("file_line_range") or [0, 0])[1] or 0),
                 commit_sha=commit_sha,
-                detected_at=datetime.now(timezone.utc),
+                detected_at=datetime.now(UTC),
                 message=str(r.get("check_name") or ""),
             )
         )
@@ -96,7 +93,7 @@ _OFFLINE_RULES: list[tuple[str, str, str]] = [
     ("CKV_AWS_20", r'acl\s*=\s*"public-read"', "S3 bucket allows public read"),
     ("CKV_AWS_18", r'aws_s3_bucket"\s+"', "S3 access logging not configured"),
     ("CKV_AWS_24", r'cidr_blocks\s*=\s*\[\s*"0\.0\.0\.0/0"', "SG allows 0.0.0.0/0"),
-    ("CKV_AWS_41", r'(AKIA[0-9A-Z]{16})', "Hardcoded AWS access key"),
+    ("CKV_AWS_41", r"(AKIA[0-9A-Z]{16})", "Hardcoded AWS access key"),
     ("CKV_AWS_19", r'aws_s3_bucket"\s+"', "S3 server-side encryption not set"),
 ]
 
@@ -123,7 +120,7 @@ def _offline_fallback_scan(target_dir: Path, commit_sha: str) -> list[Finding]:
                         line_start=line,
                         line_end=line,
                         commit_sha=commit_sha,
-                        detected_at=datetime.now(timezone.utc),
+                        detected_at=datetime.now(UTC),
                         message=msg,
                     )
                 )

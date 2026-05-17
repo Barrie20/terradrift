@@ -9,7 +9,7 @@ from __future__ import annotations
 
 import json
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -24,7 +24,7 @@ def main() -> None:
         return
 
     data = json.loads(RESULTS_JSON.read_text(encoding="utf-8"))
-    when = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    when = datetime.now(UTC).isoformat(timespec="seconds")
 
     table = (
         "| Metric | Value |\n"
@@ -36,15 +36,16 @@ def main() -> None:
     )
 
     RESULTS_MD.parent.mkdir(parents=True, exist_ok=True)
-    RESULTS_MD.write_text(
-        f"# Benchmarks — latest run\n\n{table}\n", encoding="utf-8"
-    )
+    RESULTS_MD.write_text(f"# Benchmarks — latest run\n\n{table}\n", encoding="utf-8")
 
     if README.exists():
         readme = README.read_text(encoding="utf-8")
+        begin = "<!-- BEGIN: AUTO-GENERATED RESULTS -->"
+        end = "<!-- END: AUTO-GENERATED RESULTS -->"
+        replacement = f"{begin}\n{table}\n{end}"
         new = re.sub(
-            r"<!-- BEGIN: AUTO-GENERATED RESULTS -->.*?<!-- END: AUTO-GENERATED RESULTS -->",
-            f"<!-- BEGIN: AUTO-GENERATED RESULTS -->\n{table}\n<!-- END: AUTO-GENERATED RESULTS -->",
+            rf"{re.escape(begin)}.*?{re.escape(end)}",
+            replacement,
             readme,
             flags=re.DOTALL,
         )

@@ -48,10 +48,12 @@ packages = ["src/terradrift"]
 [tool.ruff]
 line-length = 100
 target-version = "py312"
+extend-exclude = ["notebooks", "docs/paper", "infra"]
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "B", "UP", "S", "RUF"]
-ignore = ["S101"]  # allow asserts in tests
+ignore = ["S101", "S603", "S607", "S105", "UP042"]
+per-file-ignores = { "tests/**" = ["S"], "scripts/**" = ["S"] }
 
 [tool.mypy]
 python_version = "3.12"
