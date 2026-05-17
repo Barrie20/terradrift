@@ -8,25 +8,24 @@
 
 \title{TerraDrift: An Empirical Study of Security Drift in Public Terraform Modules}
 
-\author{Barrie20}
+\author{Alpha Yerroh Barrie}
 \affiliation{%
-  \institution{[Your University]}
+  \institution{Stanton University}
   \city{California}
   \country{USA}}
-\email{your@email}
+\email{yerrohbarrie06@gmail.com}
 
 \begin{document}
 
 \begin{abstract}
 We present \textsc{TerraDrift}, the first empirical study of the
 \emph{lifecycle} of security misconfigurations in public Terraform modules.
-Mining $\sim$12{,}000 GitHub repositories and $\sim$4M commits, we measure
-how long Checkov-classified CRITICAL/HIGH violations live in \texttt{main}
-before being fixed and how often they regress after being patched. We
-release the corpus, the analysis pipeline, and a 17-category taxonomy
-linking Checkov rules to high-level CWE-aligned categories. Our preliminary
-findings indicate that a substantial fraction of misconfigurations persist
-for over six months, and a non-trivial fraction recur after fixes.
+Mining 1{,}000+ GitHub repositories and 873 commits in a 20-repo pilot, we
+measure how long Checkov-classified CRITICAL/HIGH violations live in
+\texttt{main} before being fixed and how often they regress after being
+patched. Our pilot reveals a 7.9\% fix rate: 92.1\% of introduced
+misconfigurations are never resolved. We release \textsc{TerraDrift}, the
+corpus, and the analysis pipeline as open artifacts.
 \end{abstract}
 
 \maketitle
