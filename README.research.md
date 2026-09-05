@@ -37,11 +37,15 @@ flowchart TD
 ## 4. Reproducibility
 
 ```bash
-make reproduce               # full pipeline (~6h on c6i.8xlarge)
-make reproduce-mini          # 200-module subset (~15 min on a laptop)
+make pilot                   # 10 repositories × 3 recent commits
+make reproduce-mini          # bundled 10-repository set × 10 commits
+make reproduce               # corpus/repos.csv manifest × 10 commits
 ```
 
-The `make reproduce-mini` flow is the one reviewers can run on a laptop.
+Each flow walks Git history, stores normalized findings and drift events in
+DuckDB, and exports JSON, CSV, and an SVG event chart. Increase coverage with
+`terradrift reproduce --subset full --manifest corpus/repos.csv --limit 200
+--max-commits 50` when compute and network capacity are available.
 
 ## 5. Threats to validity
 

@@ -31,7 +31,7 @@ import os
 import sys
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 try:
@@ -200,23 +200,35 @@ def save_to_csv(repos: list[RepoInfo], output_path: Path) -> None:
 
     with output_path.open("w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow([
-            "full_name", "html_url", "description", "stars", "forks",
-            "language", "created_at", "pushed_at", "default_branch", "topics",
-        ])
+        writer.writerow(
+            [
+                "full_name",
+                "html_url",
+                "description",
+                "stars",
+                "forks",
+                "language",
+                "created_at",
+                "pushed_at",
+                "default_branch",
+                "topics",
+            ]
+        )
         for r in repos:
-            writer.writerow([
-                r.full_name,
-                r.html_url,
-                r.description,
-                r.stars,
-                r.forks,
-                r.language,
-                r.created_at,
-                r.pushed_at,
-                r.default_branch,
-                ";".join(r.topics),
-            ])
+            writer.writerow(
+                [
+                    r.full_name,
+                    r.html_url,
+                    r.description,
+                    r.stars,
+                    r.forks,
+                    r.language,
+                    r.created_at,
+                    r.pushed_at,
+                    r.default_branch,
+                    ";".join(r.topics),
+                ]
+            )
 
     print(f"Saved to: {output_path}")
     print(f"File size: {output_path.stat().st_size / 1024:.1f} KB")
@@ -236,19 +248,27 @@ def main() -> None:
         epilog="Example: python corpus/crawl.py --stars 10 --limit 100",
     )
     parser.add_argument(
-        "--stars", type=int, default=10,
+        "--stars",
+        type=int,
+        default=10,
         help="Minimum star count (default: 10)",
     )
     parser.add_argument(
-        "--limit", type=int, default=1000,
+        "--limit",
+        type=int,
+        default=1000,
         help="Max repos to collect (default: 1000, max: 1000 per GitHub API)",
     )
     parser.add_argument(
-        "--output", type=Path, default=Path("corpus/repos.csv"),
+        "--output",
+        type=Path,
+        default=Path("corpus/repos.csv"),
         help="Output CSV path (default: corpus/repos.csv)",
     )
     parser.add_argument(
-        "--since", type=int, default=2024,
+        "--since",
+        type=int,
+        default=2024,
         help="Only repos pushed after this year (default: 2024)",
     )
 
@@ -261,7 +281,7 @@ def main() -> None:
     print(f"  Limit:      {args.limit}")
     print(f"  Since:      {args.since}")
     print(f"  Output:     {args.output}")
-    print(f"  Time:       {datetime.now(timezone.utc).isoformat()}")
+    print(f"  Time:       {datetime.now(UTC).isoformat()}")
     print("=" * 60)
     print()
 

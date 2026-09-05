@@ -18,6 +18,9 @@ build/
 corpus/clones/
 corpus/raw/
 *.parquet.tmp
+*.duckdb
+reports/*/results.json
+reports/*/clones/
 
 # Notebook output
 .ipynb_checkpoints/

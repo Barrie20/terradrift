@@ -1,0 +1,9 @@
+{
+  "repositories": 10,
+  "findings": 1034,
+  "drift_events": {
+    "INTRODUCED": 354,
+    "FIXED": 24,
+    "REGRESSED": 0
+  }
+}
