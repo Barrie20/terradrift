@@ -72,6 +72,22 @@ make demo           # scans the included sample Terraform repo
 
 What you'll see: a CSV report of the misconfigurations found, classified into 17 categories.
 
+### Run the complete local research pipeline
+
+```bash
+make reproduce-mini
+```
+
+This command scans the bundled repository set across Git history and creates:
+
+- `results.json` with per-repository findings and drift events
+- `terradrift.duckdb` for SQL analysis
+- `summary.json` and `drift-events.csv` with aggregate counts
+- `drift-events.svg` with introduced, fixed, and regressed findings
+
+For a quick 10-repository, 3-commit study, run `make pilot`. To use your own
+crawler manifest, run `make reproduce` after creating `corpus/repos.csv`.
+
 ---
 
 ## 📚 Three READMEs, three audiences
@@ -89,7 +105,7 @@ What you'll see: a CSV report of the misconfigurations found, classified into 17
 ```
 terradrift/
 ├── corpus/                # crawler + manifest of mined repos
-├── src/terradrift/        # parser, drift detector, classifier, CLI
+├── src/terradrift/        # parser, scanner, history walker, DuckDB, CLI
 ├── notebooks/             # exploratory data analysis
 ├── infra/terraform/       # AWS Batch + S3 pipeline (IaC for the IaC scanner)
 ├── docs/                  # ARCHITECTURE, SECURITY, THREAT_MODEL, RUNBOOK

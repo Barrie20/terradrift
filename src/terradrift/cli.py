@@ -20,6 +20,8 @@ from rich.table import Table
 
 from terradrift import __version__
 from terradrift.analyzer import run_checkov
+from terradrift.reproduce import describe_reproduction, run_reproduction
+from terradrift.warehouse import write_summary_files
 
 console = Console()
 
@@ -109,18 +111,51 @@ def scan(target: Path, output: Path | None, commit: str) -> None:
 
 @main.command()
 @click.option("--subset", type=click.Choice(["mini", "full"]), default="mini")
-def reproduce(subset: str) -> None:
-    """Reproduce paper results.
-
-    `mini` runs a 200-module subset on a laptop in ~15 minutes.
-    `full` runs the full corpus and is intended for AWS Batch (~6h).
-    """
-    if subset == "mini":
-        console.print("[yellow]Mini reproduction is a stub in v0.1; wire crawler in v0.2.[/yellow]")
-    else:
-        console.print(
-            "[yellow]Full reproduction requires AWS credentials; see infra/terraform/.[/yellow]"
+@click.option("--manifest", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option("--limit", type=click.IntRange(min=1), help="Limit repositories")
+@click.option("--max-commits", type=click.IntRange(min=1), default=10, show_default=True)
+@click.option(
+    "--output-dir",
+    type=click.Path(file_okay=False, path_type=Path),
+    default=Path("reports/reproduce-mini"),
+    show_default=True,
+)
+def reproduce(
+    subset: str,
+    manifest: Path | None,
+    limit: int | None,
+    max_commits: int,
+    output_dir: Path,
+) -> None:
+    """Run history scans, load DuckDB, and create summary charts."""
+    try:
+        artifacts = run_reproduction(
+            subset,
+            output_dir=output_dir,
+            manifest=manifest,
+            limit=limit,
+            max_commits=max_commits,
         )
+    except ValueError as error:
+        raise click.ClickException(str(error)) from error
+    console.print(f"[green]{describe_reproduction(artifacts)}[/green]")
+    console.print(f"Results: {artifacts.results_json}")
+    console.print(f"Chart: {artifacts.chart}")
+
+
+@main.command()
+@click.argument("database", type=click.Path(exists=True, dir_okay=False, path_type=Path))
+@click.option(
+    "--output-dir",
+    type=click.Path(file_okay=False, path_type=Path),
+    default=Path("reports/summary"),
+    show_default=True,
+)
+def summarize(database: Path, output_dir: Path) -> None:
+    """Create JSON, CSV, and SVG summaries from a TerraDrift database."""
+    paths = write_summary_files(database, output_dir)
+    console.print(f"Summary: {paths['json']}")
+    console.print(f"Chart: {paths['chart']}")
 
 
 if __name__ == "__main__":
