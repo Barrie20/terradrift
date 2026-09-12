@@ -304,3 +304,11 @@ Statistical Analysis
             |
             v
 Reproducible Dataset and Report
+
+## Research Documentation
+
+- [Pilot Protocol](docs/PILOT_PROTOCOL.md)
+- [Data Dictionary](docs/DATA_DICTIONARY.md)
+- [Protocol Amendments](docs/PROTOCOL_AMENDMENTS.md)
+- [Pilot Candidate Register](data/pilot/repository_candidates.csv)
+- [GitHub Issue #2](https://github.com/Barrie20/terradrift/issues/2)
